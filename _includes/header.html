@@ -924,29 +924,29 @@ document.addEventListener('DOMContentLoaded', function() {
                   } else {
                     contentPreview = `<div class="sequence-content"><div class="sequence-info-row"><strong>Sequence:</strong><span class="sequence-text">${sequence}</span></div>`;
                   }
-
-                  const info = [];
-                  if (item.named && item.named.trim()) {
-                    info.push(`<strong>Sequence Name:</strong> ${this.highlightKeywords(item.named.trim(), query)}`);
-                  }
-                  if (item.content.includes('Ligand:')) {
-                    const lm = item.content.match(/Ligand:\s*([^|]+)/i); if (lm && lm[1]) info.push(`<strong>Ligand:</strong> ${this.highlightKeywords(lm[1].trim(), query)}`);
-                  }
-                  if (info.length >= 2) {
-                    contentPreview += `<div class="sequence-info-row">${info.slice(0,2).join(' | ')}</div>`;
-                    for (let i=2;i<info.length;i++) contentPreview += `<div class="sequence-info-row">${info[i]}</div>`;
-                  } else if (info.length === 1) {
-                    contentPreview += `<div class="sequence-info-row">${info[0]}</div>`;
-                  }
-                  if (item.content.includes('Affinity:')) {
-                    const am = item.content.match(/Affinity:\s*([^|]+)/i); if (am && am[1]) contentPreview += `<div class="sequence-info-row"><strong>Affinity:</strong> ${this.highlightKeywords(am[1].trim(), query)}</div>`;
-                  }
-                  contentPreview += `</div>`;
                 } else if (sequence.length > maxVisibleLength) {
-                  contentPreview = `<div class="sequence-content"><div class="sequence-info-row"><strong>Sequence:</strong><span class="sequence-text">${sequence.substring(0, maxVisibleLength)}...</span><button class="btn-toggle-sequence" data-full="${sequence}">Show more</button></div></div>`;
+                  contentPreview = `<div class="sequence-content"><div class="sequence-info-row"><strong>Sequence:</strong><span class="sequence-text">${sequence.substring(0, maxVisibleLength)}...</span><button class="btn-toggle-sequence" data-full="${sequence}">Show more</button></div>`;
                 } else {
-                  contentPreview = `<div class="sequence-content"><div class="sequence-info-row"><strong>Sequence:</strong><span class="sequence-text">${sequence}</span></div></div>`;
+                  contentPreview = `<div class="sequence-content"><div class="sequence-info-row"><strong>Sequence:</strong><span class="sequence-text">${sequence}</span></div>`;
                 }
+
+                const info = [];
+                if (item.named && item.named.trim()) {
+                  info.push(`<strong>Sequence Name:</strong> ${this.highlightKeywords(item.named.trim(), query)}`);
+                }
+                if (item.content.includes('Ligand:')) {
+                  const lm = item.content.match(/Ligand:\s*([^|]+)/i); if (lm && lm[1]) info.push(`<strong>Ligand:</strong> ${this.highlightKeywords(lm[1].trim(), query)}`);
+                }
+                if (info.length >= 2) {
+                  contentPreview += `<div class="sequence-info-row">${info.slice(0,2).join(' | ')}</div>`;
+                  for (let i=2;i<info.length;i++) contentPreview += `<div class="sequence-info-row">${info[i]}</div>`;
+                } else if (info.length === 1) {
+                  contentPreview += `<div class="sequence-info-row">${info[0]}</div>`;
+                }
+                if (item.content.includes('Affinity:')) {
+                  const am = item.content.match(/Affinity:\s*([^|]+)/i); if (am && am[1]) contentPreview += `<div class="sequence-info-row"><strong>Affinity:</strong> ${this.highlightKeywords(am[1].trim(), query)}</div>`;
+                }
+                contentPreview += `</div>`;
               } else {
                 contentPreview = this.getContentPreview(item.content, query);
               }
