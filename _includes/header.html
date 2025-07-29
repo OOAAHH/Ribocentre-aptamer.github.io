@@ -767,7 +767,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return item;
       });
-
       },
 
       parseTagsToMap(tagsStr) {
@@ -803,7 +802,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         return tagMap;
       },
-
 
       generateSequenceSearchQuery(item) {
         if (item.structured_tags && item.structured_tags['Ligand']) {
@@ -956,6 +954,7 @@ document.addEventListener('DOMContentLoaded', function() {
               contentPreview = this.getContentPreview(item.content, query);
             }
           }
+
           // ===== Tags (show Target type and multi-aptamer flag) =====
           const tags = [];
           if (item.structured_tags && item.structured_tags['Type']) {
