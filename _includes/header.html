@@ -932,6 +932,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const info = [];
                 let infoHtml = '';
+
                 if (item.named && item.named.trim()) {
                   info.push(`<strong>Sequence Name:</strong> ${this.highlightKeywords(item.named.trim(), query)}`);
                 }
