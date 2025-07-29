@@ -949,7 +949,6 @@ document.addEventListener('DOMContentLoaded', function() {
                   const am = item.content.match(/Affinity:\s*([^|]+)/i); if (am && am[1]) infoHtml += `<div class="sequence-info-row"><strong>Affinity:</strong> ${this.highlightKeywords(am[1].trim(), query)}</div>`;
                 }
                 contentPreview += infoHtml;
-
               } else {
                 contentPreview = this.getContentPreview(item.content, query);
               }
