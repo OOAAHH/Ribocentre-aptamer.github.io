@@ -11,6 +11,12 @@ if (window.location.pathname.includes('Ribocentre-aptamer')) {
 
 // ====== 原有代码继续 ======
 
+// 在全局范围内保存当前饼图的类型标签，供其他模块或调试使用
+// 之前此变量只在 createTypeChart 内部声明，若其他地方意外引用会导致
+// "displayTypes is not defined" 的报错。这里提升为模块级变量，并在
+// createTypeChart 中更新它。
+let displayTypes = [];
+
 // 扩展DataModule.loadData方法，处理aptamer特有的数据字段
 const originalLoadData = DataModule.loadData;
 DataModule.loadData = async function() {
@@ -97,6 +103,11 @@ DataModule.loadData = async function() {
             // 处理 affinity 字段
             if (!processedItem.affinity && processedItem.Affinity) {
                 processedItem.affinity = processedItem.Affinity;
+            }
+            
+            // 处理 type 字段
+            if (!processedItem.type && processedItem.Type) {
+                processedItem.type = processedItem.Type;
             }
             
             // 处理 description 字段
@@ -194,9 +205,9 @@ TableModule.updateDataTable = function() {
             if (aptamerNameHTML.includes(',')) {
                 // 从sequence name中提取对应的aptamer部分
                 if (seqName.includes('CB-42')) {
-                    aptamerNameHTML = 'CB-42 aptamer';
+                    aptamerNameHTML = 'Cibacron Blue 3GA_CB-42 aptamer';
                 } else if (seqName.includes('B4-25')) {
-                    aptamerNameHTML = 'B4-25 aptamer';
+                    aptamerNameHTML = 'Reactive Blue 4_B4-25 aptamer';
                 } else if (seqName.includes('Ribostamycin')) {
                     aptamerNameHTML = 'Ribostamycin aptamer';
                 } else if (seqName.includes('Paromomycin')) {
@@ -257,7 +268,7 @@ ChartModule.createTypeChart = function() {
     // 获取所有可能的类型（基于原始数据）
     const allTypeCounts = {};
     originalData.forEach(d => {
-        // 使用type或Type字段
+        // 使用type或Type字段，优先使用小写的type字段
         const type = d.type || d.Type || 'Unknown';
         allTypeCounts[type] = (allTypeCounts[type] || 0) + 1;
     });
@@ -336,7 +347,8 @@ ChartModule.createTypeChart = function() {
     }
     
     // 只显示有数据的类型
-    const displayTypes = pieData.filter(d => d.count > 0).map(d => d.type);
+    // 更新全局 displayTypes 以避免外部引用时报错
+    displayTypes = pieData.filter(d => d.count > 0).map(d => d.type);
     const displayValues = pieData.filter(d => d.count > 0).map(d => d.count);
     const isFiltered = pieData.filter(d => d.count > 0).map(d => d.isFiltered);
     
@@ -371,43 +383,46 @@ ChartModule.createTypeChart = function() {
         'Unknown': 'Aptamers with unspecified target type'
     };
     
+    const baseColors = displayTypes.map((type, i) => morandiColors[i % morandiColors.length]);
+
     const trace = {
         labels: displayTypes,
         values: displayValues,
         type: 'pie',
         hole: 0.4,
+        pull: displayTypes.map((type, i) =>
+            isFiltered[i] ? highlightConfig.pie.selectedOffset : 0
+        ),
         marker: {
             colors: displayTypes.map((type, i) => {
-                // 如果该类型被选中，使用高亮颜色
+                // 如果该类型被选中，使用高亮效果（白色填充 + 原色边框）
                 if (isFiltered[i]) {
-                    return morandiHighlight;
+                    return '#fff';
                 }
                 // 正常颜色
-                return morandiColors[i % morandiColors.length];
+                return baseColors[i];
             }),
             line: {
                 color: displayTypes.map((type, i) => {
                     if (isFiltered[i]) {
-                        return '#333';
+                        return baseColors[i];
                     }
                     return 'white';
                 }),
                 width: displayTypes.map((type, i) => {
                     if (isFiltered[i]) {
-                        return 3;
+                        return highlightConfig.pie.borderWidth;
                     }
                     return 1;
                 })
             }
         },
         textinfo: 'percent',
-        textfont: { size: 11, color: 'white' },
-        hovertemplate: displayTypes.map(type => {
-            const description = typeDescriptions[type] || '';
-            return '<b>' + type + '</b><br>Count: %{value}<br>Percentage: %{percent}<br>' + 
-                   (description ? '<i>' + description + '</i><br>' : '') +
-                   'Click for multi-select filter<extra></extra>';
-        }),
+        textfont: {
+            size: 11,
+            color: displayTypes.map((type, i) => isFiltered[i] ? baseColors[i] : 'white')
+        },
+        hovertemplate: '<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<br><i>Click for multi-select filter</i><extra></extra>',
         hoverlabel: { 
             bgcolor: 'white', 
             bordercolor: morandiHighlight,
@@ -483,9 +498,10 @@ FilterModule.calculateSpecificNodeData = function(nodeId) {
         console.log(`更新 ${nodeId} 节点数据: ${nodeFilteredData[nodeId].length} 条记录`);
     } else if (nodeId === 'typeChart' && activeFilters.types && activeFilters.types.size > 0) {
         // 类型筛选 - 直接从原始数据筛选
-        nodeFilteredData[nodeId] = originalData.filter(d => 
-            activeFilters.types.has(d.type || d.Type || 'Unknown')
-        );
+        nodeFilteredData[nodeId] = originalData.filter(d => {
+            const itemType = d.type || d.Type || 'Unknown';
+            return activeFilters.types.has(itemType);
+        });
         console.log(`更新 ${nodeId} 节点数据: ${nodeFilteredData[nodeId].length} 条记录`);
     } else if (nodeId === 'scatterChart' && activeFilters.scatterSelection) {
         // 散点图区域筛选 - 直接从原始数据筛选
@@ -506,6 +522,83 @@ FilterModule.calculateSpecificNodeData = function(nodeId) {
         // 如果该节点没有应用筛选条件，使用原始数据
         nodeFilteredData[nodeId] = [...originalData];
     }
+};
+
+// ====== 修复：覆写calculateNodeData，补全typeChart分支 ======
+const originalCalculateNodeData = FilterModule.calculateNodeData;
+FilterModule.calculateNodeData = function() {
+    // 首先保存当前冻结节点的数据
+    const frozenNodesData = {};
+    for (const nodeId in nodeFrozenState) {
+        if (nodeFrozenState[nodeId]) {
+            frozenNodesData[nodeId] = [...nodeFilteredData[nodeId]];
+        }
+    }
+    // 重置未冻结节点的数据
+    for (const nodeId in nodeFilteredData) {
+        if (!nodeFrozenState[nodeId]) {
+            nodeFilteredData[nodeId] = [];
+        }
+    }
+    // 如果没有交互，所有节点使用原始数据
+    if (nodeInteractionOrder.length === 0) {
+        for (const nodeId in nodeFilteredData) {
+            nodeFilteredData[nodeId] = [...originalData];
+        }
+        return;
+    }
+    // 恢复冻结节点的数据
+    for (const nodeId in frozenNodesData) {
+        nodeFilteredData[nodeId] = [...frozenNodesData[nodeId]];
+    }
+    // 只有一个节点(A节点)
+    if (nodeInteractionOrder.length === 1) {
+        const firstNodeId = nodeInteractionOrder[0];
+        const firstNodeData = nodeFilteredData[firstNodeId];
+        // 非交互节点使用A节点的筛选结果
+        for (const nodeId in nodeFilteredData) {
+            if (nodeId !== firstNodeId && !nodeFrozenState[nodeId]) {
+                nodeFilteredData[nodeId] = [...firstNodeData];
+            }
+        }
+        return;
+    }
+    // 多节点交互情况
+    nodeInteractionOrder.forEach((interactedNodeId, index) => {
+        if (index === 0) return; // 跳过A节点
+        const parentNodeId = nodeInteractionOrder[index - 1];
+        const parentNodeData = nodeFilteredData[parentNodeId];
+        if (interactedNodeId === 'yearChart' && activeFilters.years.size > 0) {
+            nodeFilteredData[interactedNodeId] = parentNodeData.filter(d => (d.year || d.Year) && activeFilters.years.has(d.year || d.Year));
+        } else if (interactedNodeId === 'ligandChart' && activeFilters.categories.size > 0) {
+            nodeFilteredData[interactedNodeId] = parentNodeData.filter(d => (d.category || d.Category) && activeFilters.categories.has(d.category || d.Category));
+        } else if (interactedNodeId === 'typeChart' && activeFilters.types && activeFilters.types.size > 0) {
+            nodeFilteredData[interactedNodeId] = parentNodeData.filter(d => {
+                const itemType = d.type || d.Type || 'Unknown';
+                return activeFilters.types.has(itemType);
+            });
+        } else if (interactedNodeId === 'scatterChart' && activeFilters.scatterSelection) {
+            const sel = activeFilters.scatterSelection;
+            nodeFilteredData[interactedNodeId] = parentNodeData.filter(d =>
+                d.length >= sel.xrange[0] && d.length <= sel.xrange[1] &&
+                d.gc_content >= sel.yrange[0] && d.gc_content <= sel.yrange[1]
+            );
+        } else {
+            nodeFilteredData[interactedNodeId] = [...parentNodeData];
+        }
+    });
+    // 剩余未交互节点使用最后一个交互节点的数据
+    if (nodeInteractionOrder.length > 0) {
+        const lastNodeId = nodeInteractionOrder[nodeInteractionOrder.length - 1];
+        const lastNodeData = nodeFilteredData[lastNodeId];
+        for (const nodeId in nodeFilteredData) {
+            if (!nodeInteractionOrder.includes(nodeId) && !nodeFrozenState[nodeId]) {
+                nodeFilteredData[nodeId] = [...lastNodeData];
+            }
+        }
+    }
+    // 控制台输出
+    console.log("节点数据计算完成，交互顺序:", nodeInteractionOrder.join(" > "));
 };
 
 // 覆写FilterModule.updateNodeStateIndicators方法，解决可能缺失DOM节点的问题并支持类型图
@@ -605,34 +698,58 @@ const originalUpdateFilterTags = FilterModule.updateFilterTags;
 FilterModule.updateFilterTags = function() {
     const tagsContainer = document.getElementById('filterTags');
     if (!tagsContainer) return;
-    
+
     tagsContainer.innerHTML = '';
-    
+
+    // 颜色映射
+    const allYears = [...new Set(originalData.map(d => d.year))].sort();
+    const yearColorMap = {};
+    allYears.forEach((year, i) => {
+        yearColorMap[year] = morandiColors[i % morandiColors.length];
+    });
+
+    const allCategories = [...new Set(originalData.map(d => d.category))];
+    const categoryColorMap = {};
+    allCategories.forEach((cat, i) => {
+        if (categoryPaletteMap && categoryPaletteMap[cat]) {
+            categoryColorMap[cat] = categoryPaletteMap[cat];
+        } else {
+            categoryColorMap[cat] = morandiColors[i % morandiColors.length];
+        }
+    });
+
+    const typeColorMap = {};
+    if (typeof displayTypes !== 'undefined') {
+        displayTypes.forEach((type, i) => {
+            typeColorMap[type] = morandiColors[i % morandiColors.length];
+        });
+    }
+
     // Year tags
     activeFilters.years.forEach(year => {
-        const tag = createFilterTag(`Year: ${year}`, () => this.toggleYearFilter(year));
+        const tag = createFilterTag(`Year: ${year}`, () => this.toggleYearFilter(year), yearColorMap[year], 'yearChart');
         tagsContainer.appendChild(tag);
     });
-    
+
     // Category tags
     activeFilters.categories.forEach(category => {
-        const tag = createFilterTag(`Category: ${category}`, () => this.toggleCategoryFilter(category));
+        const tag = createFilterTag(`Category: ${category}`, () => this.toggleCategoryFilter(category), categoryColorMap[category], 'ligandChart');
         tagsContainer.appendChild(tag);
     });
-    
+
     // Type tags
     if (activeFilters.types) {
         activeFilters.types.forEach(type => {
-            const tag = createFilterTag(`Type: ${type}`, () => this.toggleTypeFilter(type));
+            const tag = createFilterTag(`Type: ${type}`, () => this.toggleTypeFilter(type), typeColorMap[type], 'typeChart');
             tagsContainer.appendChild(tag);
         });
     }
-    
+
     // Scatter plot filter tag
     if (activeFilters.scatterSelection) {
         const sel = activeFilters.scatterSelection;
         const text = `Range: ${sel.xrange[0].toFixed(0)}-${sel.xrange[1].toFixed(0)}bp, ${sel.yrange[0].toFixed(1)}-${sel.yrange[1].toFixed(1)}%`;
-        const tag = createFilterTag(text, () => this.clearScatterSelection());
+        const tag = createFilterTag(text, () => this.clearScatterSelection(), morandiHighlight, 'scatterChart');
         tagsContainer.appendChild(tag);
     }
     

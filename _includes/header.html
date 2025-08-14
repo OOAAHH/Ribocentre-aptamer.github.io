@@ -862,7 +862,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isMatchView = btn.closest('.sequence-matched') !== null;
             seqContainer.innerHTML = `<div class="sequence-info-row"><strong>Sequence:</strong><span class="sequence-text">${fullSequence}</span><button class="btn-toggle-sequence" data-full="${fullSequence}" data-mode="${isMatchView ? 'match' : 'truncate'}">Show less</button></div>`;
           } else {
-            const truncated = fullSequence.substring(0, 40);
+            const truncated = fullSequence.substring(0, 42);
             seqContainer.innerHTML = `<div class="sequence-info-row"><strong>Sequence:</strong><span class="sequence-text">${truncated}...</span><button class="btn-toggle-sequence" data-full="${fullSequence}">Show more</button></div>`;
           }
         };
@@ -870,7 +870,7 @@ document.addEventListener('DOMContentLoaded', function() {
       },
 
              currentPage: 1,
-       resultsPerPage: 5,
+       resultsPerPage: 2,
        allResults: [],
 
        renderResults(results, query) {
@@ -901,7 +901,7 @@ document.addEventListener('DOMContentLoaded', function() {
               const seqMatch = item.content.match(/Sequence:\s*([ACGTU\s]+)/i);
               if (seqMatch && seqMatch[1]) {
                 const sequence = seqMatch[1].trim();
-                const maxVisibleLength = 40;
+                const maxVisibleLength =42;
                 const isSearchingSequence = query && /[ACGTU]{2,}/i.test(query);
                 if (isSearchingSequence) {
                   const queryRegex = new RegExp(query.replace(/[ACGTU]+/ig, m => m.split('').join('[\\s]*')), 'ig');
@@ -1000,7 +1000,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
           html += `<div class="result-item-list ${item.result_type === 'sequence' ? 'result-sequence' : 'result-page'}">
             <div class="result-header">
-              <span class="result-index">${startIndex + index + 1}</span>
               <h3 class="result-title"><a href="${item.url}" target="_blank">${highlightedTitle}</a></h3>
               <div class="result-tags">${tags.join('')}</div>
             </div>

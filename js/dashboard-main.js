@@ -202,6 +202,12 @@ const DataModule = {
     }
 };
 
+// ====== 分类配色映射（自动加载） ======
+let categoryPaletteMap = {};
+fetch('/apidata/palette_map_20250806_231255.json')
+  .then(res => res.json())
+  .then(data => { categoryPaletteMap = data; });
+
 // ====== 图表渲染模块 ======
 const ChartModule = {
     // 创建年份分布图表
@@ -254,43 +260,49 @@ const ChartModule = {
         const hasAnyFilter = nodeInteractionOrder.length > 0;
         
         // 柱状图始终显示所有年份，但基于可视化数据源
+        const baseColors = allYears.map((year, i) => morandiColors[i % morandiColors.length]);
         const trace = {
             x: allYears,
             y: allYears.map(year => visualizationYearCounts[year] || 0), // 使用可视化数据源的计数
             type: 'bar',
+            width: allYears.map(year =>
+                hasYearFilter && activeFilters.years.has(year)
+                    ? highlightConfig.bar.selectedWidth
+                    : highlightConfig.bar.defaultWidth
+            ),
             marker: {
                 color: allYears.map((year, i) => {
-                    // 如果该年份被选中，使用高亮颜色
+                    // 如果该年份被选中，使用高亮效果（白色填充 + 原色边框）
                     if (hasYearFilter && activeFilters.years.has(year)) {
-                        return morandiHighlight;
+                        return '#fff';
                     }
                     // 如果有筛选但该年份没有数据，使用暗淡颜色
                     if (hasAnyFilter && (!visualizationYearCounts[year] || visualizationYearCounts[year] === 0)) {
                         return morandiDim;
                     }
                     // 正常颜色
-                    return morandiColors[i % morandiColors.length];
+                    return baseColors[i];
                 }),
                 opacity: 1.0,
                 line: {
                     width: allYears.map(year => {
                         if (hasYearFilter && activeFilters.years.has(year)) {
-                            return 3;
+                            return highlightConfig.bar.borderWidth;
                         }
                         return 1;
                     }),
-                    color: allYears.map(year => {
+                    color: allYears.map((year, i) => {
                         if (hasYearFilter && activeFilters.years.has(year)) {
-                            return '#333';
+                            return baseColors[i];
                         }
                         return 'white';
                     })
                 }
             },
-            hovertemplate: '<b>Year: %{x}</b><br>' + 
+            hovertemplate: '<b>Year: %{x}</b><br>' +
                           'Count: %{y}<br>' +
                           'Click for multi-select filter<extra></extra>',
-            hoverlabel: { 
+            hoverlabel: {
                 bgcolor: 'white', 
                 bordercolor: morandiHighlight,
                 font: { size: 12, color: '#333' },
@@ -435,37 +447,45 @@ const ChartModule = {
             return;
         }
         
+        const baseColors = displayCategories.map((category, i) => {
+            if (categoryPaletteMap && categoryPaletteMap[category]) {
+                return categoryPaletteMap[category];
+            }
+            return morandiColors[i % morandiColors.length];
+        });
+
         const trace = {
             labels: displayCategories,
             values: displayValues,
             type: 'pie',
             hole: 0.4,
+            pull: displayCategories.map((category, i) =>
+                isFiltered[i] ? highlightConfig.pie.selectedOffset : 0
+            ),
             marker: {
                 colors: displayCategories.map((category, i) => {
-                    // 如果该类别被选中，使用高亮颜色
+                    // 如果该类别被选中，使用高亮效果（白色填充 + 原色边框）
                     if (isFiltered[i]) {
-                        return morandiHighlight;
+                        return '#fff';
                     }
-                    // 正常颜色
-                    return morandiColors[i % morandiColors.length];
+                    return baseColors[i];
                 }),
                 line: {
                     color: displayCategories.map((category, i) => {
                         if (isFiltered[i]) {
-                            return '#333';
+                            return baseColors[i];
                         }
                         return 'white';
                     }),
                     width: displayCategories.map((category, i) => {
                         if (isFiltered[i]) {
-                            return 3;
+                            return highlightConfig.pie.borderWidth;
                         }
                         return 1;
                     })
                 }
             },
-            textinfo: 'percent',
-            textfont: { size: 11, color: 'white' },
+            textinfo: 'none',
             hoverinfo: 'label+value+percent',
             hovertemplate: '<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<br><i>Click to filter</i><extra></extra>',
             hoverlabel: { 
@@ -484,8 +504,22 @@ const ChartModule = {
         
         const layout = {
             ...chartLayoutBase,
-            margin: { l: 20, r: 20, t: 20, b: 20 },
-            showlegend: false,
+            margin: { l: 20, r: 120, t: 20, b: 20 },
+            showlegend: true,
+            legend: {
+                orientation: 'v',
+                x: 1.02,
+                y: 0.5,
+                xanchor: 'left',
+                yanchor: 'middle',
+                bgcolor: 'rgba(255,255,255,0.8)',
+                bordercolor: 'rgba(0,0,0,0.1)',
+                borderwidth: 1,
+                font: {
+                    size: 10,
+                    color: '#333'
+                }
+            },
             hovermode: 'closest',
             title: hasAnyFilter ? {
                 // text: nodeFrozenState.ligandChart ? '类别分布 (已冻结)' : '类别分布 (已筛选)',
@@ -508,7 +542,7 @@ const ChartModule = {
         };
         
         Plotly.newPlot('ligandChart', [trace], layout, pieChartConfig);
-        
+
         document.getElementById('ligandChart').on('plotly_click', function(data) {
             const category = data.points[0].label;
             FilterModule.toggleCategoryFilter(category);
@@ -607,8 +641,8 @@ const ChartModule = {
         // 确定每个点的颜色和大小
         const colors = dataForVisualization.map((d, i) => {
             if (hasScatterSelection && nodeFrozenState.scatterChart && scatterSelected.includes(i)) {
-                // 被选中的点使用高亮颜色
-                return morandiHighlight;
+                // 被选中的点使用高亮效果（白色填充 + 原色边框）
+                return '#fff';
             }
             // 正常颜色
             return yearColorMap[d.year];
@@ -639,14 +673,19 @@ const ChartModule = {
                     }
                     return 0.8;
                 }),
-                line: { 
+                line: {
                     width: dataForVisualization.map((d, i) => {
                         if (hasScatterSelection && nodeFrozenState.scatterChart && scatterSelected.includes(i)) {
                             return 2;
                         }
                         return 1;
-                    }), 
-                    color: 'white' 
+                    }),
+                    color: dataForVisualization.map((d, i) => {
+                        if (hasScatterSelection && nodeFrozenState.scatterChart && scatterSelected.includes(i)) {
+                            return yearColorMap[d.year];
+                        }
+                        return 'white';
+                    })
                 }
             },
             hovertemplate: '<b>%{text}</b><br>Length: %{x} bp<br>GC Content: %{y}%<br>Year: %{customdata[0]}<br>Category: %{customdata[1]}<extra></extra>',
@@ -895,6 +934,13 @@ const FilterModule = {
             activeFilters.years.add(year);
         }
         
+        // 检查是否所有筛选条件都为空，如果是则自动重置
+        if (this.shouldAutoReset()) {
+            console.log('检测到所有筛选条件已清空，自动重置节点状态');
+            resetAllFilters();
+            return;
+        }
+        
         // 注册节点交互
         this.registerNodeInteraction('yearChart');
     },
@@ -907,6 +953,13 @@ const FilterModule = {
             activeFilters.categories.delete(category);
         } else {
             activeFilters.categories.add(category);
+        }
+        
+        // 检查是否所有筛选条件都为空，如果是则自动重置
+        if (this.shouldAutoReset()) {
+            console.log('检测到所有筛选条件已清空，自动重置节点状态');
+            resetAllFilters();
+            return;
         }
         
         // 注册节点交互
@@ -953,31 +1006,66 @@ const FilterModule = {
             nodeFrozenState.scatterChart = false;
         }
         
+        // 检查是否所有筛选条件都为空，如果是则自动重置
+        if (this.shouldAutoReset()) {
+            console.log('检测到所有筛选条件已清空，自动重置节点状态');
+            resetAllFilters();
+            return;
+        }
+        
         this.applyFilters();
+    },
+    
+    // 检查是否应该自动重置（所有筛选条件都为空）
+    shouldAutoReset() {
+        const hasActiveFilters = activeFilters.years.size > 0 ||
+                               activeFilters.categories.size > 0 ||
+                               (activeFilters.types && activeFilters.types.size > 0) ||
+                               activeFilters.scatterSelection !== null;
+        
+        // 如果没有任何激活的筛选条件，且有节点交互历史，则应该重置
+        return !hasActiveFilters && nodeInteractionOrder.length > 0;
     },
 
     // 更新筛选标签
     updateFilterTags() {
         const tagsContainer = document.getElementById('filterTags');
         tagsContainer.innerHTML = '';
-        
+
+        // 颜色映射
+        const allYears = [...new Set(originalData.map(d => d.year))].sort();
+        const yearColorMap = {};
+        allYears.forEach((year, i) => {
+            yearColorMap[year] = morandiColors[i % morandiColors.length];
+        });
+
+        const allCategories = [...new Set(originalData.map(d => d.category))];
+        const categoryColorMap = {};
+        allCategories.forEach((cat, i) => {
+            if (categoryPaletteMap && categoryPaletteMap[cat]) {
+                categoryColorMap[cat] = categoryPaletteMap[cat];
+            } else {
+                categoryColorMap[cat] = morandiColors[i % morandiColors.length];
+            }
+        });
+
         // Year tags
         activeFilters.years.forEach(year => {
-            const tag = createFilterTag(`Year: ${year}`, () => this.toggleYearFilter(year));
+            const tag = createFilterTag(`Year: ${year}`, () => this.toggleYearFilter(year), yearColorMap[year], 'yearChart');
             tagsContainer.appendChild(tag);
         });
-        
+
         // Category tags
         activeFilters.categories.forEach(category => {
-            const tag = createFilterTag(`Category: ${category}`, () => this.toggleCategoryFilter(category));
+            const tag = createFilterTag(`Category: ${category}`, () => this.toggleCategoryFilter(category), categoryColorMap[category], 'ligandChart');
             tagsContainer.appendChild(tag);
         });
-        
+
         // Scatter plot filter tag
         if (activeFilters.scatterSelection) {
             const sel = activeFilters.scatterSelection;
             const text = `Range: ${sel.xrange[0].toFixed(0)}-${sel.xrange[1].toFixed(0)}bp, ${sel.yrange[0].toFixed(1)}-${sel.yrange[1].toFixed(1)}%`;
-            const tag = createFilterTag(text, () => this.clearScatterSelection());
+            const tag = createFilterTag(text, () => this.clearScatterSelection(), morandiHighlight, 'scatterChart');
             tagsContainer.appendChild(tag);
         }
         
@@ -1119,7 +1207,7 @@ const FilterModule = {
     // 应用筛选器，基于节点层级逻辑
     applyFilters() {
         console.log('应用筛选器 - 当前交互顺序:', nodeInteractionOrder.join(" > "));
-        console.log('筛选条件 - 年份:', Array.from(activeFilters.years), '类别:', Array.from(activeFilters.categories));
+        console.log('筛选条件 - 年份:', Array.from(activeFilters.years), '类别:', Array.from(activeFilters.categories), '类型:', Array.from(activeFilters.types || []));
         
         // 首先，基于所有筛选条件过滤原始数据
         const dataWithAllFilters = originalData.filter(d => {
@@ -1131,6 +1219,14 @@ const FilterModule = {
             // 类别筛选
             if (activeFilters.categories.size > 0 && !activeFilters.categories.has(d.category)) {
                 return false;
+            }
+            
+            // 类型筛选
+            if (activeFilters.types && activeFilters.types.size > 0) {
+                const itemType = d.type || d.Type || 'Unknown';
+                if (!activeFilters.types.has(itemType)) {
+                    return false;
+                }
             }
             
             // 散点图区域筛选
@@ -1147,7 +1243,8 @@ const FilterModule = {
         
         // 如果筛选后数据为空，但有筛选条件，给出警告
         if (dataWithAllFilters.length === 0 && 
-            (activeFilters.years.size > 0 || activeFilters.categories.size > 0 || activeFilters.scatterSelection)) {
+            (activeFilters.years.size > 0 || activeFilters.categories.size > 0 || 
+             (activeFilters.types && activeFilters.types.size > 0) || activeFilters.scatterSelection)) {
             console.warn('应用所有筛选条件后没有匹配数据');
             
             // 如果散点图筛选导致没有数据，尝试重置散点图筛选
@@ -1169,7 +1266,8 @@ const FilterModule = {
         console.log(`筛选后数据: ${filteredData.length}/${originalData.length} 条`);
         
         // 检查筛选后是否有数据
-        if (filteredData.length === 0 && (activeFilters.years.size > 0 || activeFilters.categories.size > 0 || activeFilters.scatterSelection)) {
+        if (filteredData.length === 0 && (activeFilters.years.size > 0 || activeFilters.categories.size > 0 || 
+            (activeFilters.types && activeFilters.types.size > 0) || activeFilters.scatterSelection)) {
             console.warn('筛选后没有数据！');
             this.showNoDataWarning();
         } else {
@@ -1273,9 +1371,9 @@ const TableModule = {
                 if (processedAptamerName.includes(',')) {
                     // 从sequence name中提取对应的aptamer部分
                     if (seqName.includes('CB-42')) {
-                        processedAptamerName = 'CB-42 aptamer';
+                        processedAptamerName = 'Cibacron Blue 3GA_CB-42 aptamer';
                     } else if (seqName.includes('B4-25')) {
-                        processedAptamerName = 'B4-25 aptamer';
+                        processedAptamerName = 'Reactive Blue 4_B4-25 aptamer';
                     } else if (seqName.includes('Ribostamycin')) {
                         processedAptamerName = 'Ribostamycin aptamer';
                     } else if (seqName.includes('Paromomycin')) {

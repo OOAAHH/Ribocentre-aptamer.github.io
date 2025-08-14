@@ -4,861 +4,870 @@
     "version": "2.0",
     "last_updated": "2024-06-26",
     "total_items": 53,
-    "categories": 8
+    "categories": 17
   },
   "category_config": {
-    "Fluorescent Aptamers": {
-      "primary_color": "#FF6B6B",
+    "Fluorophores": {
+      "primary_color": "#AEE1D6",
       "colors": [
-        "#FF6B6B",
-        "#4ECDC4"
+        "#AEE1D6"
       ],
-      "description": "荧光适配体"
+      "description": "Fluorophores"
     },
-    "Small Molecules": {
-      "primary_color": "#45B7D1",
+    "Biologics & Signaling Molecules": {
+      "primary_color": "#7CCCCC",
       "colors": [
-        "#45B7D1"
+        "#7CCCCC"
       ],
-      "description": "小分子化合物"
+      "description": "Biologics & Signaling Molecules"
     },
-    "Antibiotics": {
-      "primary_color": "#FFEAA7",
+    "Nucleosides & Nucleotides": {
+      "primary_color": "#A6D1F2",
       "colors": [
-        "#FFEAA7"
+        "#A6D1F2"
       ],
-      "description": "抗生素"
+      "description": "Nucleosides & Nucleotides"
+    },
+    "Amino Acids & Peptides": {
+      "primary_color": "#B5C7ED",
+      "colors": [
+        "#B5C7ED"
+      ],
+      "description": "Amino Acids & Peptides"
+    },
+    "Viral": {
+      "primary_color": "#90A7E6",
+      "colors": [
+        "#90A7E6"
+      ],
+      "description": "Viral"
+    },
+    "Pharmaceuticals": {
+      "primary_color": "#C4B1E0",
+      "colors": [
+        "#C4B1E0"
+      ],
+      "description": "Pharmaceuticals"
+    },
+    "Mammalian": {
+      "primary_color": "#E7B7E8",
+      "colors": [
+        "#E7B7E8"
+      ],
+      "description": "Mammalian"
+    },
+    "Bacteria": {
+      "primary_color": "#F7B7A3",
+      "colors": [
+        "#F7B7A3"
+      ],
+      "description": "Bacteria"
+    },
+    "Other": {
+      "primary_color": "#F5A6A6",
+      "colors": [
+        "#F5A6A6"
+      ],
+      "description": "Other"
+    },
+    "RNA": {
+      "primary_color": "#FFD3B4",
+      "colors": [
+        "#FFD3B4"
+      ],
+      "description": "RNA"
+    },
+    "Prion": {
+      "primary_color": "#F7E6AD",
+      "colors": [
+        "#F7E6AD"
+      ],
+      "description": "Prion"
     },
     "Proteins": {
-      "primary_color": "#96CEB4",
+      "primary_color": "#D9E89D",
       "colors": [
-        "#96CEB4"
+        "#D9E89D"
       ],
-      "description": "蛋白质"
+      "description": "Proteins"
     },
-    "Transcription Factors": {
-      "primary_color": "#DDA0DD",
+    "cell": {
+      "primary_color": "#AEE392",
       "colors": [
-        "#DDA0DD"
+        "#AEE392"
       ],
-      "description": "转录因子"
+      "description": "cell"
     },
-    "Viral & Nucleic Acids": {
-      "primary_color": "#DDA0DD",
+    "Parasite": {
+      "primary_color": "#8EC46C",
       "colors": [
-        "#DDA0DD"
+        "#8EC46C"
       ],
-      "description": "病毒与核酸"
+      "description": "Parasite"
     },
-    "Prions": {
-      "primary_color": "#DDA0DD",
+    "Nucleic Acids": {
+      "primary_color": "#B8D0C5",
       "colors": [
-        "#DDA0DD"
+        "#B8D0C5"
       ],
-      "description": "朊病毒"
+      "description": "Nucleic Acids"
     },
-    "Others": {
-      "primary_color": "#808080",
+    "Toxin": {
+      "primary_color": "#C0E6BA",
       "colors": [
-        "#808080"
+        "#C0E6BA"
       ],
-      "description": "其他"
+      "description": "Toxin"
+    },
+    "Synthetic": {
+      "primary_color": "#C1C8E4",
+      "colors": [
+        "#C1C8E4"
+      ],
+      "description": "Synthetic"
     }
   },
   "data": [
     {
       "name": "Beetroot",
       "link": "https://aptamer.ribocentre.org/_posts/Beetroot-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 1
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Broccoli",
       "link": "https://aptamer.ribocentre.org/_posts/Broccoli-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 2
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Chili",
       "link": "https://aptamer.ribocentre.org/_posts/Chili-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 3
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Clivias",
       "link": "https://aptamer.ribocentre.org/_posts/Clivias-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 4
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Corn",
       "link": "https://aptamer.ribocentre.org/_posts/Corn-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 5
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Mango",
       "link": "https://aptamer.ribocentre.org/_posts/Mango-aptamer(TO1-biotin)",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 6
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Mango II",
       "link": "https://aptamer.ribocentre.org/_posts/Mango-aptamer(TO1-biotin)",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 7
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Mango III",
       "link": "https://aptamer.ribocentre.org/_posts/Mango-III-aptamer(YO3)",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 8
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Mango IV",
       "link": "https://aptamer.ribocentre.org/_posts/Mango-III-aptamer(YO3)",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 1,
         "column": 9
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Pepper",
       "link": "https://aptamer.ribocentre.org/_posts/Pepper-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 2,
         "column": 1
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "RhoBAST",
       "link": "https://aptamer.ribocentre.org/_posts/RhoBAST-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 2,
         "column": 2
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Spinach",
       "link": "https://aptamer.ribocentre.org/_posts/Spinach-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 2,
         "column": 3
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Squash",
       "link": "https://aptamer.ribocentre.org/_posts/Squash-aptamer",
-      "background_color": "#FF6B6B",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 2,
         "column": 4
       },
-      "category": "Fluorescent Aptamers",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Fluorescent Aptamers",
-        "primary_color": "#FF6B6B",
-        "description": "荧光适配体"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "5HTP",
       "link": "https://aptamer.ribocentre.org/_posts/5HTP-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#7CCCCC",
       "position": {
         "row": 2,
         "column": 5
       },
-      "category": "Small Molecules",
+      "category": "Biologics & Signaling Molecules",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Biologics & Signaling Molecules",
+        "primary_color": "#7CCCCC"
       }
     },
     {
       "name": "ATP",
       "link": "https://aptamer.ribocentre.org/_posts/ATP-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#A6D1F2",
       "position": {
         "row": 2,
         "column": 6
       },
-      "category": "Small Molecules",
+      "category": "Nucleosides & Nucleotides",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Nucleosides & Nucleotides",
+        "primary_color": "#A6D1F2"
       }
     },
     {
       "name": "Arginine",
       "link": "https://aptamer.ribocentre.org/_posts/Arginine-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#B5C7ED",
       "position": {
         "row": 2,
         "column": 7
       },
-      "category": "Small Molecules",
+      "category": "Amino Acids & Peptides",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Amino Acids & Peptides",
+        "primary_color": "#B5C7ED"
       }
     },
     {
       "name": "Biotin",
       "link": "https://aptamer.ribocentre.org/_posts/Biotin-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#7CCCCC",
       "position": {
         "row": 2,
         "column": 8
       },
-      "category": "Small Molecules",
+      "category": "Biologics & Signaling Molecules",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Biologics & Signaling Molecules",
+        "primary_color": "#7CCCCC"
       }
     },
     {
       "name": "Citrulline",
       "link": "https://aptamer.ribocentre.org/_posts/Citrulline-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#B5C7ED",
       "position": {
         "row": 2,
         "column": 9
       },
-      "category": "Small Molecules",
+      "category": "Amino Acids & Peptides",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Amino Acids & Peptides",
+        "primary_color": "#B5C7ED"
       }
     },
     {
       "name": "FAD",
       "link": "https://aptamer.ribocentre.org/_posts/FAD-aptamer.html",
-      "background_color": "#45B7D1",
+      "background_color": "#7CCCCC",
       "position": {
         "row": 3,
         "column": 1
       },
-      "category": "Small Molecules",
+      "category": "Biologics & Signaling Molecules",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Biologics & Signaling Molecules",
+        "primary_color": "#7CCCCC"
       }
     },
     {
       "name": "FMN",
       "link": "https://aptamer.ribocentre.org/_posts/FMN-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#7CCCCC",
       "position": {
         "row": 3,
         "column": 2
       },
-      "category": "Small Molecules",
+      "category": "Biologics & Signaling Molecules",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Biologics & Signaling Molecules",
+        "primary_color": "#7CCCCC"
       }
     },
     {
       "name": "GTP",
       "link": "https://aptamer.ribocentre.org/_posts/GTP-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#A6D1F2",
       "position": {
         "row": 3,
         "column": 3
       },
-      "category": "Small Molecules",
+      "category": "Nucleosides & Nucleotides",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Nucleosides & Nucleotides",
+        "primary_color": "#A6D1F2"
       }
     },
     {
       "name": "HTLV-1 arginine-rich Rex peptide",
-      "link": "https://aptamer.ribocentre.org/_posts/Rex-protein-aptamer.html",
-      "background_color": "#45B7D1",
+      "link": "https://aptamer.ribocentre.org/_posts/HTLV-1-Rex-peptide-aptamer.html",
+      "background_color": "#90A7E6",
       "position": {
         "row": 3,
         "column": 4
       },
-      "category": "Small Molecules",
+      "category": "Viral",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Viral",
+        "primary_color": "#90A7E6"
       }
     },
     {
       "name": "TMR",
       "link": "https://aptamer.ribocentre.org/_posts/TMR-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 3,
         "column": 5
       },
-      "category": "Small Molecules",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "Vitamin B12",
       "link": "https://aptamer.ribocentre.org/_posts/Vitamin-B12-aptamer",
-      "background_color": "#45B7D1",
+      "background_color": "#7CCCCC",
       "position": {
         "row": 3,
         "column": 6
       },
-      "category": "Small Molecules",
+      "category": "Biologics & Signaling Molecules",
       "category_info": {
-        "name": "Small Molecules",
-        "primary_color": "#45B7D1",
-        "description": "小分子化合物"
+        "name": "Biologics & Signaling Molecules",
+        "primary_color": "#7CCCCC"
       }
     },
     {
       "name": "Neomycin B",
       "link": "https://aptamer.ribocentre.org/_posts/NeomycinB-aptamer.html",
-      "background_color": "#FFEAA7",
+      "background_color": "#C4B1E0",
       "position": {
         "row": 3,
         "column": 7
       },
-      "category": "Antibiotics",
+      "category": "Pharmaceuticals",
       "category_info": {
-        "name": "Antibiotics",
-        "primary_color": "#FFEAA7",
-        "description": "抗生素"
+        "name": "Pharmaceuticals",
+        "primary_color": "#C4B1E0"
       }
     },
     {
       "name": "Paromomycin aptamer",
       "link": "https://aptamer.ribocentre.org/_posts/Ribostamycin-aptamer",
-      "background_color": "#FFEAA7",
+      "background_color": "#C4B1E0",
       "position": {
         "row": 3,
         "column": 8
       },
-      "category": "Antibiotics",
+      "category": "Pharmaceuticals",
       "category_info": {
-        "name": "Antibiotics",
-        "primary_color": "#FFEAA7",
-        "description": "抗生素"
+        "name": "Pharmaceuticals",
+        "primary_color": "#C4B1E0"
       }
     },
     {
       "name": "Ribostamycin aptamer",
       "link": "https://aptamer.ribocentre.org/_posts/Ribostamycin-aptamer.html",
-      "background_color": "#FFEAA7",
+      "background_color": "#C4B1E0",
       "position": {
         "row": 3,
         "column": 9
       },
-      "category": "Antibiotics",
+      "category": "Pharmaceuticals",
       "category_info": {
-        "name": "Antibiotics",
-        "primary_color": "#FFEAA7",
-        "description": "抗生素"
+        "name": "Pharmaceuticals",
+        "primary_color": "#C4B1E0"
       }
     },
     {
       "name": "Streptomycin",
       "link": "https://aptamer.ribocentre.org/_posts/Streptomycin-aptamer.html",
-      "background_color": "#FFEAA7",
+      "background_color": "#C4B1E0",
       "position": {
         "row": 4,
         "column": 1
       },
-      "category": "Antibiotics",
+      "category": "Pharmaceuticals",
       "category_info": {
-        "name": "Antibiotics",
-        "primary_color": "#FFEAA7",
-        "description": "抗生素"
+        "name": "Pharmaceuticals",
+        "primary_color": "#C4B1E0"
       }
     },
     {
       "name": "Tetracycline",
       "link": "https://aptamer.ribocentre.org/_posts/Tetracycline-aptamer",
-      "background_color": "#FFEAA7",
+      "background_color": "#C4B1E0",
       "position": {
         "row": 4,
         "column": 2
       },
-      "category": "Antibiotics",
+      "category": "Pharmaceuticals",
       "category_info": {
-        "name": "Antibiotics",
-        "primary_color": "#FFEAA7",
-        "description": "抗生素"
+        "name": "Pharmaceuticals",
+        "primary_color": "#C4B1E0"
       }
     },
     {
       "name": "Theophylline",
       "link": "https://aptamer.ribocentre.org/_posts/Theophylline-aptamer",
-      "background_color": "#FFEAA7",
+      "background_color": "#C4B1E0",
       "position": {
         "row": 4,
         "column": 3
       },
-      "category": "Antibiotics",
+      "category": "Pharmaceuticals",
       "category_info": {
-        "name": "Antibiotics",
-        "primary_color": "#FFEAA7",
-        "description": "抗生素"
+        "name": "Pharmaceuticals",
+        "primary_color": "#C4B1E0"
       }
     },
     {
       "name": "Tobramycin",
       "link": "https://aptamer.ribocentre.org/_posts/Tobramycin-aptamer.html",
-      "background_color": "#FFEAA7",
+      "background_color": "#C4B1E0",
       "position": {
         "row": 4,
         "column": 4
       },
-      "category": "Antibiotics",
+      "category": "Pharmaceuticals",
       "category_info": {
-        "name": "Antibiotics",
-        "primary_color": "#FFEAA7",
-        "description": "抗生素"
+        "name": "Pharmaceuticals",
+        "primary_color": "#C4B1E0"
       }
     },
     {
       "name": "AML1",
       "link": "https://aptamer.ribocentre.org/_posts/AML1(RUNX1)-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 4,
         "column": 5
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "Factor Xa",
       "link": "https://aptamer.ribocentre.org/_posts/Factor-Xa-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 4,
         "column": 6
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "GRK2",
       "link": "https://aptamer.ribocentre.org/_posts/GRK2-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 4,
         "column": 7
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "GlnRs",
       "link": "https://aptamer.ribocentre.org/_posts/GlnRs-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 4,
         "column": 8
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "Hfq",
       "link": "https://aptamer.ribocentre.org/_posts/Hfq-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#F7B7A3",
       "position": {
         "row": 4,
         "column": 9
       },
-      "category": "Proteins",
+      "category": "Bacteria",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Bacteria",
+        "primary_color": "#F7B7A3"
       }
     },
     {
       "name": "Human IgG",
       "link": "https://aptamer.ribocentre.org/_posts/IgG-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 5,
         "column": 1
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "L-CCL2",
       "link": "https://aptamer.ribocentre.org/_posts/L-CCL2-aptamer.html",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 5,
         "column": 2
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "PSMA",
       "link": "https://aptamer.ribocentre.org/_posts/PSMA-aptamer.html",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 5,
         "column": 3
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "TetR",
       "link": "https://aptamer.ribocentre.org/_posts/TetR-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#F7B7A3",
       "position": {
         "row": 5,
         "column": 4
       },
-      "category": "Proteins",
+      "category": "Bacteria",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Bacteria",
+        "primary_color": "#F7B7A3"
       }
     },
     {
       "name": "Thrombin",
       "link": "https://aptamer.ribocentre.org/_posts/Thrombin-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 5,
         "column": 5
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "eIF4A",
       "link": "https://aptamer.ribocentre.org/_posts/eIF4A-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 5,
         "column": 6
       },
-      "category": "Proteins",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "lysozyme",
       "link": "https://aptamer.ribocentre.org/_posts/Lysozyme-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#F5A6A6",
       "position": {
         "row": 5,
         "column": 7
       },
-      "category": "Proteins",
+      "category": "Other",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Other",
+        "primary_color": "#F5A6A6"
       }
     },
     {
       "name": "ribosomal protein S8",
       "link": "https://aptamer.ribocentre.org/_posts/Ribosomal-protein-S8-aptamer",
-      "background_color": "#96CEB4",
+      "background_color": "#F7B7A3",
       "position": {
         "row": 5,
         "column": 8
       },
-      "category": "Proteins",
+      "category": "Bacteria",
       "category_info": {
-        "name": "Proteins",
-        "primary_color": "#96CEB4",
-        "description": "蛋白质"
+        "name": "Bacteria",
+        "primary_color": "#F7B7A3"
       }
     },
     {
       "name": "NF-kappaB",
       "link": "https://aptamer.ribocentre.org/_posts/NF-kappaB-aptamer",
-      "background_color": "#DDA0DD",
+      "background_color": "#E7B7E8",
       "position": {
         "row": 5,
         "column": 9
       },
-      "category": "Transcription Factors",
+      "category": "Mammalian",
       "category_info": {
-        "name": "Transcription Factors",
-        "primary_color": "#DDA0DD",
-        "description": "转录因子"
+        "name": "Mammalian",
+        "primary_color": "#E7B7E8"
       }
     },
     {
       "name": "Bacteriophage MS2 coat protein",
       "link": "https://aptamer.ribocentre.org/_posts/bacteriophage-MS2-coat-protein-aptamer",
-      "background_color": "#DDA0DD",
+      "background_color": "#F5A6A6",
       "position": {
         "row": 6,
         "column": 1
       },
-      "category": "Viral & Nucleic Acids",
+      "category": "Other",
       "category_info": {
-        "name": "Viral & Nucleic Acids",
-        "primary_color": "#DDA0DD",
-        "description": "病毒与核酸"
+        "name": "Other",
+        "primary_color": "#F5A6A6"
       }
     },
     {
       "name": "HIV-1 REV peptide",
       "link": "https://aptamer.ribocentre.org/_posts/HIV-1-REV-peptide-aptamer",
-      "background_color": "#DDA0DD",
+      "background_color": "#90A7E6",
       "position": {
         "row": 6,
         "column": 2
       },
-      "category": "Viral & Nucleic Acids",
+      "category": "Viral",
       "category_info": {
-        "name": "Viral & Nucleic Acids",
-        "primary_color": "#DDA0DD",
-        "description": "病毒与核酸"
+        "name": "Viral",
+        "primary_color": "#90A7E6"
       }
     },
     {
       "name": "HIV-1 TAR RNA",
       "link": "https://aptamer.ribocentre.org/_posts/HIV-1-TAR-RNA-aptamer.html",
-      "background_color": "#DDA0DD",
+      "background_color": "#FFD3B4",
       "position": {
         "row": 6,
         "column": 3
       },
-      "category": "Viral & Nucleic Acids",
+      "category": "RNA",
       "category_info": {
-        "name": "Viral & Nucleic Acids",
-        "primary_color": "#DDA0DD",
-        "description": "病毒与核酸"
+        "name": "RNA",
+        "primary_color": "#FFD3B4"
       }
     },
     {
       "name": "HIV-1 Tat protein",
-      "link": "https://aptamer.ribocentre.org/_posts/HIV-Tat-aptamer.html",
-      "background_color": "#DDA0DD",
+      "link": "https://aptamer.ribocentre.org/_posts/HIV-1-Tat-protein-aptamer.html",
+      "background_color": "#90A7E6",
       "position": {
         "row": 6,
         "column": 4
       },
-      "category": "Viral & Nucleic Acids",
+      "category": "Viral",
       "category_info": {
-        "name": "Viral & Nucleic Acids",
-        "primary_color": "#DDA0DD",
-        "description": "病毒与核酸"
+        "name": "Viral",
+        "primary_color": "#90A7E6"
       }
     },
     {
       "name": "RNA polymerase (Pol) II",
       "link": "https://aptamer.ribocentre.org/_posts/FC-RNA-aptamer",
-      "background_color": "#DDA0DD",
+      "background_color": "#F5A6A6",
       "position": {
         "row": 6,
         "column": 5
       },
-      "category": "Viral & Nucleic Acids",
+      "category": "Other",
       "category_info": {
-        "name": "Viral & Nucleic Acids",
-        "primary_color": "#DDA0DD",
-        "description": "病毒与核酸"
+        "name": "Other",
+        "primary_color": "#F5A6A6"
       }
     },
     {
       "name": "Bovine prion",
       "link": "https://aptamer.ribocentre.org/_posts/Bovine-prion-protein-aptamer.html",
-      "background_color": "#DDA0DD",
+      "background_color": "#F7E6AD",
       "position": {
         "row": 6,
         "column": 6
       },
-      "category": "Prions",
+      "category": "Prion",
       "category_info": {
-        "name": "Prions",
-        "primary_color": "#DDA0DD",
-        "description": "朊病毒"
+        "name": "Prion",
+        "primary_color": "#F7E6AD"
       }
     },
     {
       "name": "DIR2s",
       "link": "https://aptamer.ribocentre.org/_posts/DIR2s-apt-aptamer",
-      "background_color": "#808080",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 6,
         "column": 7
       },
-      "category": "Others",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Others",
-        "primary_color": "#808080",
-        "description": "其他"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     },
     {
       "name": "MG",
       "link": "https://aptamer.ribocentre.org/_posts/MG-aptamer",
-      "background_color": "#808080",
+      "background_color": "#AEE1D6",
       "position": {
         "row": 6,
         "column": 8
       },
-      "category": "Others",
+      "category": "Fluorophores",
       "category_info": {
-        "name": "Others",
-        "primary_color": "#808080",
-        "description": "其他"
+        "name": "Fluorophores",
+        "primary_color": "#AEE1D6"
       }
     }
   ]

@@ -51,6 +51,82 @@ const morandiColors = [
 const morandiHighlight = '#7D807F'; // 柔和深灰，作为高亮边框
 const morandiDim = 'rgba(180,180,180,0.3)'; // 非高亮部分叠加的半透明灰
 
+// 选中状态样式配置
+const highlightConfig = {
+    bar: {
+        defaultWidth: 0.8,
+        selectedWidth: 0.72,
+        borderWidth: 3
+    },
+    pie: {
+        selectedOffset: 0.05,
+        borderWidth: 3,
+        scale: 1.05,
+        shadow: '0px 0px 8px rgba(0,0,0,0.4)',
+        animationDuration: 300
+    }
+};
+
+// 参考aptamer-legend.js的高亮效果：
+// 选中元素背景变为白色，并以内置的原始颜色作为内边框
+function applyHighlightStyle(elements, baseColor) {
+    elements.forEach(el => {
+        el.classList.add('highlighted');
+        el.style.setProperty('--highlight-border', baseColor);
+        el.style.setProperty('--highlight-bg', '#fff');
+    });
+}
+
+function removeHighlightStyle(elements) {
+    elements.forEach(el => {
+        el.classList.remove('highlighted');
+        el.style.removeProperty('--highlight-border');
+        el.style.removeProperty('--highlight-bg');
+    });
+}
+
+// 对饼图扇形应用动画和阴影高亮效果 - 使用Plotly 3.x兼容的方法
+function applyPieHighlight(chartId, selectedFlags) {
+    const gd = document.getElementById(chartId);
+    if (!gd || !selectedFlags) return;
+
+    try {
+        // 获取当前图表数据
+        const currentData = gd.data && gd.data[0];
+        if (!currentData) {
+            console.warn('饼图数据未找到');
+            return;
+        }
+
+        // 构建高亮样式的更新数据
+        const updateData = {
+            // 根据选中状态构建pull数组，使选中的扇形向外移动
+            pull: selectedFlags.map(flag =>
+                flag ? highlightConfig.pie.selectedOffset : 0
+            ),
+            // 构建边框宽度数组
+            'marker.line.width': selectedFlags.map(flag =>
+                flag ? highlightConfig.pie.borderWidth : 1
+            ),
+            // 构建透明度数组，非选中的扇形稍微暗一点
+            opacity: selectedFlags.map(flag => flag ? 1.0 : 0.8)
+        };
+
+        // 使用Plotly.restyle来更新图表样式，这是Plotly 3.x推荐的方法
+        Plotly.restyle(gd, updateData, 0).then(() => {
+            console.log('饼图高亮效果已应用');
+        }).catch(error => {
+            console.warn('饼图高亮效果应用失败:', error);
+        });
+
+    } catch (error) {
+        console.error('饼图高亮效果处理出错:', error);
+    }
+}
+
+// 导出以便其他脚本调用
+window.applyPieHighlight = applyPieHighlight;
+
 // ====== 图表配置 ======
 const chartConfig = {
     responsive: true,
@@ -194,15 +270,29 @@ function hideAmirTooltip() {
     tooltip.style.opacity = '0';
 }
 
-// 创建筛选标签
-function createFilterTag(text, onRemove) {
+
+// 获取节点层级标签（A/B/C...）
+function getNodeLevel(nodeId) {
+    const index = nodeInteractionOrder.indexOf(nodeId);
+    const labels = ['A', 'B', 'C', 'D'];
+    return index >= 0 ? labels[index] : '';
+}
+
+// 创建筛选标签，使用图例风格展示颜色
+function createFilterTag(text, onRemove, color, nodeId) {
     const tag = document.createElement('div');
     tag.className = 'filter-tag';
+    if (color) {
+        tag.style.setProperty('--legend-border', color);
+    }
+    const levelLabel = getNodeLevel(nodeId);
     tag.innerHTML = `
+        <span class="legend-color" style="background:${color || '#e0e0e0'}"></span>
         <span class="filter-tag-text">${text}</span>
+        ${levelLabel ? `<span class="filter-tag-level">${levelLabel}</span>` : ''}
         <button class="filter-tag-remove" type="button">×</button>
     `;
-    
+
     tag.querySelector('.filter-tag-remove').addEventListener('click', onRemove);
     return tag;
 }
@@ -245,9 +335,9 @@ function exportData() {
         const seqName = item['Named'] || '';
         if (seqName && aptamerName !== 'N/A' && aptamerName.includes(',')) {
             if (seqName.includes('CB-42')) {
-                aptamerName = 'CB-42 aptamer';
+                aptamerName = 'Cibacron Blue 3GA_CB-42 aptamer';
             } else if (seqName.includes('B4-25')) {
-                aptamerName = 'B4-25 aptamer';
+                aptamerName = 'Reactive Blue 4_B4-25 aptamer';
             } else if (seqName.includes('Ribostamycin')) {
                 aptamerName = 'Ribostamycin aptamer';
             } else if (seqName.includes('Paromomycin')) {

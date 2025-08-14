@@ -12,6 +12,9 @@
         return;
     }
 
+    // 全局存储相位确定策略的颜色映射，确保标签与饼图颜色一致
+    let phaseColorMap = {};
+
     // --- 重写 DataModule.loadData ---
     const originalLoadData = DataModule.loadData;
     DataModule.loadData = async function () {
@@ -93,6 +96,13 @@
             // 保存到全局数据
             originalData = data;
             filteredData = [...data];
+
+            // 预生成相位确定策略的颜色映射，保持标签与图表颜色一致
+            const allPhases = [...new Set(data.map(d => d['Phase Determination'] || 'Unknown'))].sort();
+            phaseColorMap = {};
+            allPhases.forEach((phase, i) => {
+                phaseColorMap[phase] = morandiColors[i % morandiColors.length];
+            });
 
             console.log('Structure data loaded successfully, total', data.length, 'records');
 
@@ -351,31 +361,37 @@
         const hasAnyFilter = nodeInteractionOrder.length > 0;
         
         // 创建柱状图
+        const baseColors = allMethods.map((method, i) => morandiColors[i % morandiColors.length]);
         const trace = {
             x: allMethods,
             y: allMethods.map(method => visualizationMethodCounts[method] || 0),
             type: 'bar',
+            width: allMethods.map(method =>
+                hasMethodFilter && activeFilters.years.has(method)
+                    ? highlightConfig.bar.selectedWidth
+                    : highlightConfig.bar.defaultWidth
+            ),
             marker: {
                 color: allMethods.map((method, i) => {
                     if (hasMethodFilter && activeFilters.years.has(method)) {
-                        return morandiHighlight;
+                        return '#fff';
                     }
                     if (hasAnyFilter && (!visualizationMethodCounts[method] || visualizationMethodCounts[method] === 0)) {
                         return morandiDim;
                     }
-                    return morandiColors[i % morandiColors.length];
+                    return baseColors[i];
                 }),
                 opacity: 1.0,
                 line: {
                     width: allMethods.map(method => {
                         if (hasMethodFilter && activeFilters.years.has(method)) {
-                            return 3;
+                            return highlightConfig.bar.borderWidth;
                         }
                         return 1;
                     }),
-                    color: allMethods.map(method => {
+                    color: allMethods.map((method, i) => {
                         if (hasMethodFilter && activeFilters.years.has(method)) {
-                            return '#333';
+                            return baseColors[i];
                         }
                         return 'white';
                     })
@@ -494,30 +510,32 @@
             values: displayValues,
             type: 'pie',
             hole: 0.4,
+            pull: displayPhases.map((phase, i) =>
+                isFiltered[i] ? highlightConfig.pie.selectedOffset : 0
+            ),
             marker: {
                 colors: displayPhases.map((phase, i) => {
                     if (isFiltered[i]) {
-                        return morandiHighlight;
+                        return '#fff';
                     }
-                    return morandiColors[i % morandiColors.length];
+                    return phaseColorMap[phase];
                 }),
                 line: {
                     color: displayPhases.map((phase, i) => {
                         if (isFiltered[i]) {
-                            return '#333';
+                            return phaseColorMap[phase];
                         }
                         return 'white';
                     }),
                     width: displayPhases.map((phase, i) => {
                         if (isFiltered[i]) {
-                            return 3;
+                            return highlightConfig.pie.borderWidth;
                         }
                         return 1;
                     })
                 }
             },
-            textinfo: 'percent',
-            textfont: { size: 11, color: 'white' },
+            textinfo: 'none',
             hoverinfo: 'label+value+percent',
             hovertemplate: '<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<br><i>Click to filter</i><extra></extra>',
             hoverlabel: { 
@@ -530,8 +548,22 @@
         
         const layout = {
             ...chartLayoutBase,
-            margin: { l: 20, r: 20, t: 20, b: 20 },
-            showlegend: false,
+            margin: { l: 20, r: 120, t: 20, b: 20 },
+            showlegend: true,
+            legend: {
+                orientation: 'v',
+                x: 1.02,
+                y: 0.5,
+                xanchor: 'left',
+                yanchor: 'middle',
+                bgcolor: 'rgba(255,255,255,0.8)',
+                bordercolor: 'rgba(0,0,0,0.1)',
+                borderwidth: 1,
+                font: {
+                    size: 10,
+                    color: '#333'
+                }
+            },
             // 使用原生Plotly悬停模式
             hovermode: 'closest'
         };
@@ -779,8 +811,51 @@
         TableModule.updateDataTable();
     };
 
-    // --- 仅限结构页面：重写 FilterModule.updateFilterTags，使年份标签显示为 "Methods:" ---
+    // --- 仅限结构页面：覆写筛选条件切换方法，增加自动重置检测 ---
     if (typeof FilterModule !== 'undefined') {
+        const originalToggleYearFilter = FilterModule.toggleYearFilter;
+        FilterModule.toggleYearFilter = function(method) {
+            console.log('[Structure] 切换结构确定方法筛选:', method);
+            
+            if (activeFilters.years.has(method)) {
+                activeFilters.years.delete(method);
+            } else {
+                activeFilters.years.add(method);
+            }
+            
+            // 检查是否所有筛选条件都为空，如果是则自动重置
+            if (this.shouldAutoReset()) {
+                console.log('[Structure] 检测到所有筛选条件已清空，自动重置节点状态');
+                resetAllFilters();
+                return;
+            }
+            
+            // 注册节点交互
+            this.registerNodeInteraction('yearChart');
+        };
+        
+        const originalToggleCategoryFilter = FilterModule.toggleCategoryFilter;
+        FilterModule.toggleCategoryFilter = function(phase) {
+            console.log('[Structure] 切换相位确定策略筛选:', phase);
+            
+            if (activeFilters.categories.has(phase)) {
+                activeFilters.categories.delete(phase);
+            } else {
+                activeFilters.categories.add(phase);
+            }
+            
+            // 检查是否所有筛选条件都为空，如果是则自动重置
+            if (this.shouldAutoReset()) {
+                console.log('[Structure] 检测到所有筛选条件已清空，自动重置节点状态');
+                resetAllFilters();
+                return;
+            }
+            
+            // 注册节点交互
+            this.registerNodeInteraction('ligandChart');
+        };
+        
+        // 重写 FilterModule.updateFilterTags，使年份标签显示为 "Methods:"
         const originalUpdateFilterTags = FilterModule.updateFilterTags;
         FilterModule.updateFilterTags = function() {
             const tagsContainer = document.getElementById('filterTags');
@@ -790,15 +865,26 @@
             }
             tagsContainer.innerHTML = '';
 
+            // 颜色映射
+            // 使用结构确定方法和相位确定策略字段计算颜色映射，
+            // 与图表中使用的颜色保持一致
+            const allMethods = [...new Set(
+                originalData.map(d => d['Structure Determination'] || 'Unknown')
+            )].sort();
+            const methodColorMap = {};
+            allMethods.forEach((m, i) => {
+                methodColorMap[m] = morandiColors[i % morandiColors.length];
+            });
+
             // 将年份筛选标签前缀改为 Methods
             activeFilters.years.forEach(year => {
-                const tag = createFilterTag(`Methods: ${year}`, () => this.toggleYearFilter(year));
+                const tag = createFilterTag(`Methods: ${year}`, () => this.toggleYearFilter(year), methodColorMap[year], 'yearChart');
                 tagsContainer.appendChild(tag);
             });
 
-            // 类别筛选标签保持不变
+            // 类别筛选标签使用预生成的相位颜色映射
             activeFilters.categories.forEach(category => {
-                const tag = createFilterTag(`Category: ${category}`, () => this.toggleCategoryFilter(category));
+                const tag = createFilterTag(`Category: ${category}`, () => this.toggleCategoryFilter(category), phaseColorMap[category], 'ligandChart');
                 tagsContainer.appendChild(tag);
             });
 
@@ -806,7 +892,7 @@
             if (activeFilters.scatterSelection) {
                 const sel = activeFilters.scatterSelection;
                 const text = `Range: ${sel.xrange[0].toFixed(0)}-${sel.xrange[1].toFixed(0)}bp, ${sel.yrange[0].toFixed(1)}-${sel.yrange[1].toFixed(1)}%`;
-                const tag = createFilterTag(text, () => this.clearScatterSelection());
+                const tag = createFilterTag(text, () => this.clearScatterSelection(), morandiHighlight, 'scatterChart');
                 tagsContainer.appendChild(tag);
             }
 
